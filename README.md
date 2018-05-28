@@ -13,3 +13,7 @@ Hosts file:
 
 
 - 192.168.10.10  homestead.test
+
+
+
+run the vagrant up command from Homestead directory
