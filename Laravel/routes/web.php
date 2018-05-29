@@ -15,7 +15,7 @@ Route::get('/', 'GroupsController@index')->name('index');
 
 Route::get('/groups', 'GroupsController@index')->name('index');
 Route::get('/group/{id}', 'GroupsController@show')->name('index');
-Route::get('/group/create', 'GroupsController@create')->name('create');
+//Route::view('/group/create', 'GroupsController@create')->name('create');
 Route::get('/group/{id}/edit', 'GroupsController@edit')->name('create');
 
 Route::get('/contacts', 'ContactsController@index')->name('home');

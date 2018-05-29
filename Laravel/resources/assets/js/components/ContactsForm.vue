@@ -3,7 +3,6 @@
         <div class="alert alert-success" v-if="saved">
             <strong>Success!</strong> Your contact has been saved successfully.
         </div>
-
         <div class="well well-sm" id="contact-form">
             <form class="form-horizontal" method="post" @submit.prevent="onSubmit">
                 <fieldset>
@@ -11,10 +10,8 @@
                     <legend v-show="exists" class="text-center">Edit contact</legend>
                     <div class="form-contact d-block">
                         <div class="col-md-12" :class="{'has-error': errors.name}">
-                            <input id="avatar" v-model="contact.avatar" type="text" placeholder="Avatar"
-                                   class="form-control">
-                            <span v-if="errors.first_name" class="help-block text-danger">{{ errors.first_name[0]
-                                }}</span>
+                            <!--<input id="avatar" @change="handleFileChange" type="file" class="form-control">-->
+                            <input id="avatar" v-model="contact.avatar" type="text" placeholder="Avatar" class="form-control">
                             <input id="first_name" v-model="contact.first_name" type="text" placeholder="First name"
                                    class="form-control">
                             <span v-if="errors.first_name" class="help-block text-danger">{{ errors.first_name[0]
@@ -38,14 +35,13 @@
                             <span v-if="errors.country" class="help-block text-danger">{{ errors.country[0] }}</span>
                             <input id="phone" v-model="contact.phone" type="text" placeholder="phone"
                                    class="form-control">
-                            <input id="note" v-model="contact.note" type="text" placeholder="note" class="form-control">
+                            <input id="note" v-model="contact.note" type="text" placeholder="note" class="form-control" multiple>
                             <span>Selected: {{ selected }}</span>
                             <select v-model="selected" multiple class="form-control">
                                 <option v-for="group in contact.groups" v-bind:value="group.id">
                                     {{ group.name }}
                                 </option>
                             </select>
-
                         </div>
                     </div>
                     <div class="form-contact">
@@ -77,6 +73,7 @@
                 saved: false,
                 contact: {
                     id: this.contactId ? this.contactId : null,
+                    avatar: null,
                     first_name: null,
                     address: null,
                     city: null,
@@ -114,6 +111,13 @@
                 this.reset();
                 this.saved = true;
             },
+
+            handleFileChange(event) {
+                console.log(event.target.files[0].name);
+
+                //you can access the file in using event.target.files[0]
+                this.contact.avatar = event.target.files[0].name;
+            }
         }
     }
 </script>

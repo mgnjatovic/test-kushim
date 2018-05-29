@@ -15,15 +15,6 @@ class GroupsController extends Controller {
         return view('groups.index');
     }
 
-    /**
-     * Display the Groups create form for new group.
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function create() {
-        return view('groups.create');
-    }
-
     public function show($id) {
         return view('contacts.index')
             ->with('group', $id);

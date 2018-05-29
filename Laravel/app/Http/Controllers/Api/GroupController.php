@@ -39,14 +39,14 @@ class GroupController extends Controller {
         ]);
 
         if($group['id']=="") {
-            $group = Group::create($group);
+            $group_edit = Group::create($group);
         } else {
             $group_edit = group::find($group['id']);
             $group_edit->name = $group['name'];
             $group_edit->save();
         }
 
-        return Redirect::to('/');
+        return new GroupResource($group_edit);
     }
 
     public function destroy($id) {

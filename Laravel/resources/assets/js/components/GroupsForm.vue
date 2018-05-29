@@ -4,36 +4,52 @@
             <strong>Success!</strong> Your group has been saved successfully.
         </div>
 
-        <div class="well well-sm" id="group-form">
-            <form class="form-horizontal" method="post" @submit.prevent="onSubmit">
-                <fieldset>
-                    <legend v-show="!exists" class="text-center">Add new group</legend>
-                    <legend v-show="exists" class="text-center">Edit group</legend>
+        <div class="col-md-12">
+            <div class="card">
+                <div v-show="!exists" class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                        <button class="btn btn-lg btn-secondary" data-toggle="collapse" data-target="#collapseOne"
+                                aria-expanded="true"
+                                aria-controls="collapseOne">
+                            New group
+                        </button>
+                    </h5>
+                </div>
 
-                    <div class="form-group d-block">
-                        <div class="col-md-12" :class="{'has-error': errors.name}">
-                            <input id="name"
-                                   v-model="group.name"
-                                   type="text"
-                                   placeholder="Group name"
-                                   class="form-control">
-                            <span v-if="errors.name" class="help-block text-danger">{{ errors.name[0] }}</span>
+                <div id="collapseOne" :class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="well well-sm" id="group-form">
+                            <form class="form-horizontal" method="post" @submit.prevent="onSubmit">
+                                <fieldset>
+                                    <legend v-show="exists" class="text-center">Rename group</legend>
+                                    <div class="form-group d-block">
+                                        <div class="col-md-12" :class="{'has-error': errors.name}">
+                                            <input id="name"
+                                                   v-model="group.name"
+                                                   type="text"
+                                                   placeholder="Group name"
+                                                   class="form-control">
+                                            <span v-if="errors.name" class="help-block text-danger">{{ errors.name[0]
+                                                }}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-12 text-right">
+                                            <button type="submit" class="btn btn-secondary btn-md">Submit</button>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
                         </div>
                     </div>
-
-                    <div class="form-group">
-                        <div class="col-md-12 text-right">
-                            <button type="submit" class="btn btn-primary btn-lg">Submit</button>
-                        </div>
-                    </div>
-                </fieldset>
-            </form>
+                </div>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
-
     export default {
         props: ['group-id'],
         created() {
@@ -49,7 +65,8 @@
                     name: null,
                 },
                 endpoint: this.groupId ? '/api/groups/' + this.groupId : null,
-                exists: this.groupId
+                exists: this.groupId ? true : false,
+                collapse: !this.groupId ? 'collapse hide' : 'collapse show'
             };
         },
 
@@ -62,7 +79,6 @@
             },
             onSubmit() {
                 this.saved = false;
-                console.log(this.group);
                 axios.post('/api/groups', this.group)
                     .then(({data}) => this.setSuccessMessage())
                     .catch(({response}) => this.setErrors(response));
@@ -75,11 +91,12 @@
             setSuccessMessage() {
                 this.reset();
                 this.saved = true;
+                //TODO: make this work without reload
+                location.reload();
             },
 
             reset() {
                 this.errors = [];
-                this.group = {name: null};
             }
         }
     }

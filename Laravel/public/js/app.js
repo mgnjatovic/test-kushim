@@ -47337,6 +47337,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -47348,7 +47363,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     created: function created() {
         this.fetch();
     },
-
 
     methods: {
         fetch: function fetch() {
@@ -47394,17 +47408,6 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("div", { staticClass: "col-md-12 flex-center m-3" }, [
-      _c(
-        "a",
-        {
-          staticClass: "btn btn-lg btn-secondary active pull-right",
-          attrs: { href: "/group/create" }
-        },
-        [_vm._v("add new group")]
-      )
-    ]),
-    _vm._v(" "),
     _c(
       "div",
       { staticClass: "col-md-12 m-1" },
@@ -47547,7 +47550,58 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['group-id'],
@@ -47563,7 +47617,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 name: null
             },
             endpoint: this.groupId ? '/api/groups/' + this.groupId : null,
-            exists: this.groupId
+            exists: this.groupId ? true : false,
+            collapse: !this.groupId ? 'collapse hide' : 'collapse show'
         };
     },
 
@@ -47582,7 +47637,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this2 = this;
 
             this.saved = false;
-            console.log(this.group);
             axios.post('/api/groups', this.group).then(function (_ref2) {
                 var data = _ref2.data;
                 return _this2.setSuccessMessage();
@@ -47597,10 +47651,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         setSuccessMessage: function setSuccessMessage() {
             this.reset();
             this.saved = true;
+            //TODO: make this work without reload
+            location.reload();
         },
         reset: function reset() {
             this.errors = [];
-            this.group = { name: null };
         }
     }
 });
@@ -47621,100 +47676,130 @@ var render = function() {
         ])
       : _vm._e(),
     _vm._v(" "),
-    _c("div", { staticClass: "well well-sm", attrs: { id: "group-form" } }, [
-      _c(
-        "form",
-        {
-          staticClass: "form-horizontal",
-          attrs: { method: "post" },
-          on: {
-            submit: function($event) {
-              $event.preventDefault()
-              return _vm.onSubmit($event)
+    _c("div", { staticClass: "col-md-12" }, [
+      _c("div", { staticClass: "card" }, [
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: !_vm.exists,
+                expression: "!exists"
+              }
+            ],
+            staticClass: "card-header",
+            attrs: { id: "headingOne" }
+          },
+          [_vm._m(0)]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            class: _vm.collapse,
+            attrs: {
+              id: "collapseOne",
+              "aria-labelledby": "headingOne",
+              "data-parent": "#accordion"
             }
-          }
-        },
-        [
-          _c("fieldset", [
-            _c(
-              "legend",
-              {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: !_vm.exists,
-                    expression: "!exists"
-                  }
-                ],
-                staticClass: "text-center"
-              },
-              [_vm._v("Add new group")]
-            ),
-            _vm._v(" "),
-            _c(
-              "legend",
-              {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: _vm.exists,
-                    expression: "exists"
-                  }
-                ],
-                staticClass: "text-center"
-              },
-              [_vm._v("Edit group")]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group d-block" }, [
+          },
+          [
+            _c("div", { staticClass: "card-body" }, [
               _c(
                 "div",
-                {
-                  staticClass: "col-md-12",
-                  class: { "has-error": _vm.errors.name }
-                },
+                { staticClass: "well well-sm", attrs: { id: "group-form" } },
                 [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.group.name,
-                        expression: "group.name"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: {
-                      id: "name",
-                      type: "text",
-                      placeholder: "Group name"
-                    },
-                    domProps: { value: _vm.group.name },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+                  _c(
+                    "form",
+                    {
+                      staticClass: "form-horizontal",
+                      attrs: { method: "post" },
+                      on: {
+                        submit: function($event) {
+                          $event.preventDefault()
+                          return _vm.onSubmit($event)
                         }
-                        _vm.$set(_vm.group, "name", $event.target.value)
                       }
-                    }
-                  }),
-                  _vm._v(" "),
-                  _vm.errors.name
-                    ? _c("span", { staticClass: "help-block text-danger" }, [
-                        _vm._v(_vm._s(_vm.errors.name[0]))
+                    },
+                    [
+                      _c("fieldset", [
+                        _c(
+                          "legend",
+                          {
+                            directives: [
+                              {
+                                name: "show",
+                                rawName: "v-show",
+                                value: _vm.exists,
+                                expression: "exists"
+                              }
+                            ],
+                            staticClass: "text-center"
+                          },
+                          [_vm._v("Edit group")]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group d-block" }, [
+                          _c(
+                            "div",
+                            {
+                              staticClass: "col-md-12",
+                              class: { "has-error": _vm.errors.name }
+                            },
+                            [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.group.name,
+                                    expression: "group.name"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: {
+                                  id: "name",
+                                  type: "text",
+                                  placeholder: "Group name"
+                                },
+                                domProps: { value: _vm.group.name },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      _vm.group,
+                                      "name",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              }),
+                              _vm._v(" "),
+                              _vm.errors.name
+                                ? _c(
+                                    "span",
+                                    { staticClass: "help-block text-danger" },
+                                    [_vm._v(_vm._s(_vm.errors.name[0]))]
+                                  )
+                                : _vm._e()
+                            ]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _vm._m(1)
                       ])
-                    : _vm._e()
+                    ]
+                  )
                 ]
               )
-            ]),
-            _vm._v(" "),
-            _vm._m(0)
-          ])
-        ]
-      )
+            ])
+          ]
+        )
+      ])
     ])
   ])
 }
@@ -47723,11 +47808,34 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("h5", { staticClass: "mb-0" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-lg btn-secondary",
+          attrs: {
+            "data-toggle": "collapse",
+            "data-target": "#collapseOne",
+            "aria-expanded": "true",
+            "aria-controls": "collapseOne"
+          }
+        },
+        [_vm._v("\n                        New group\n                    ")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "form-group" }, [
       _c("div", { staticClass: "col-md-12 text-right" }, [
         _c(
           "button",
-          { staticClass: "btn btn-primary btn-lg", attrs: { type: "submit" } },
+          {
+            staticClass: "btn btn-secondary btn-md",
+            attrs: { type: "submit" }
+          },
           [_vm._v("Submit")]
         )
       ])
@@ -48100,10 +48208,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['contact-id'],
@@ -48122,6 +48226,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             saved: false,
             contact: {
                 id: this.contactId ? this.contactId : null,
+                avatar: null,
                 first_name: null,
                 address: null,
                 city: null,
@@ -48166,6 +48271,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         setSuccessMessage: function setSuccessMessage() {
             this.reset();
             this.saved = true;
+        },
+        handleFileChange: function handleFileChange(event) {
+            console.log(event.target.files[0].name);
+
+            //you can access the file in using event.target.files[0]
+            this.contact.avatar = event.target.files[0].name;
         }
     }
 });
@@ -48266,12 +48377,6 @@ var render = function() {
                       }
                     }
                   }),
-                  _vm._v(" "),
-                  _vm.errors.first_name
-                    ? _c("span", { staticClass: "help-block text-danger" }, [
-                        _vm._v(_vm._s(_vm.errors.first_name[0]))
-                      ])
-                    : _vm._e(),
                   _vm._v(" "),
                   _c("input", {
                     directives: [
@@ -48517,7 +48622,12 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
-                    attrs: { id: "note", type: "text", placeholder: "note" },
+                    attrs: {
+                      id: "note",
+                      type: "text",
+                      placeholder: "note",
+                      multiple: ""
+                    },
                     domProps: { value: _vm.contact.note },
                     on: {
                       input: function($event) {
