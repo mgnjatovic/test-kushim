@@ -1,23 +1,5 @@
 <template>
     <div>
-        <!--<div class="col-md-12 flex-center m-3">
-            <a v-bind:href="'/group/create'" class="btn btn-lg btn-secondary active pull-right">add new group</a>
-        </div>
-        <div class="col-md-12">
-            <p>
-                <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                    Link with href
-                </a>
-                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                    Button with data-target
-                </button>
-            </p>
-            <div class="collapse" id="collapseExample">
-                <div class="card card-body">
-                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-                </div>
-            </div>
-        </div>-->
         <div class="col-md-12 m-1">
             <div v-for="groups in groupedGroups" class="row">
                 <div v-for="group in groups" class="col-md">

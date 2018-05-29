@@ -1,9 +1,5 @@
 <template>
     <div>
-
-        <div class="col-md-12 flex-center m-3">
-            <a v-bind:href="'/contact/create'" class="btn btn-lg btn-secondary active pull-right">add new contact</a>
-        </div>
         <div v-if="contacts.length > 0">
             <div v-for="contacts in groupedContacts" class="row">
                 <div v-for="contact in contacts" class="col-lg-3">
@@ -60,7 +56,7 @@
 
             remove(id) {
                 if (confirm('Are you sure you want to remove this contact?')) {
-                    axios.get('api/contacts/' + id + '/remove')
+                    axios.get('/api/contacts/' + id + '/remove')
                         .then(response => this.removeContact(id));
                 }
             },

@@ -19,5 +19,5 @@ Route::get('/group/{id}', 'GroupsController@show')->name('index');
 Route::get('/group/{id}/edit', 'GroupsController@edit')->name('create');
 
 Route::get('/contacts', 'ContactsController@index')->name('home');
-Route::get('/contact/create', 'ContactsController@create')->name('create');
+//Route::get('/contact/create', 'ContactsController@create')->name('create');
 Route::get('/contact/{id}', 'ContactsController@edit')->name('create');

@@ -64,7 +64,7 @@ class ContactController extends Controller {
         ]);
 
         if($contact['id']=="") {
-            $contact = Contact::create($contact);
+            $contact_edit = Contact::create($contact);
         } else {
             $contact_edit = Contact::find($contact['id']);
             $contact_edit->first_name = $contact['first_name'];
@@ -85,7 +85,14 @@ class ContactController extends Controller {
         if ($group)
             $contact->groups()->save($group);
 
-        return Redirect::to('/contacts/' . $contact['id']);
+        return new ContactResource($contact_edit);
+    }
+
+    public function destroy($id) {
+        // delete
+        Contact::destroy($id);
+        // redirect
+        return Redirect::to('/');
     }
     //
 }
