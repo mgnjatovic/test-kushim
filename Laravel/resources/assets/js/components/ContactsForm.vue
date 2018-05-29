@@ -48,18 +48,15 @@
                                         <span v-if="errors.country" class="help-block text-danger">{{ errors.country[0] }}</span>
                                         <input id="phone" v-model="contact.phone" type="text" placeholder="phone"
                                                class="form-control">
-                                        <input id="note" v-model="contact.note" type="text" placeholder="note" class="form-control" multiple>
-                                        <span>Selected: {{ selected }}</span>
-                                        <select v-model="selected" multiple class="form-control">
-                                            <option v-for="group in contact.groups" v-bind:value="group.id">
-                                                {{ group.name }}
-                                            </option>
-                                        </select>
+                                        <input id="note" v-model="contact.note" type="text" placeholder="note" class="form-control">
+
+                                        <multiselect v-model="contact.groups" :options="groups" :multiple="true" class="form-control"></multiselect>
+
                                     </div>
                                 </div>
                                 <div class="form-contact">
                                     <div class="col-md-12 text-right">
-                                        <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+                                        <button type="submit" class="btn btn-secondary btn-lg">Submit</button>
                                     </div>
                                 </div>
                             </fieldset>
@@ -72,18 +69,16 @@
 </template>
 
 <script>
+    import Multiselect from 'vue-multiselect'
+
     export default {
-        props: ['contact-id'],
-        //props: ['group-id'],
+        props: ['contact-id','group-id'],
+        components: { Multiselect },
         created() {
-            //console.log(groupId);
+            this.fetchGroups();
+
             if (this.contactId)
                 this.fetch();
-        },
-        computed: {
-            selected: function() {
-                return [8,30];
-            }
         },
         data(){
             return {
@@ -98,10 +93,10 @@
                     zip: null,
                     country: null,
                     phone: null,
-                    note: null,
                     groups: null,
-                    selected: null
+                    note: null,
                 },
+                groups: [],
                 endpoint: this.contactId ? '/api/contacts/' + this.contactId : null,
                 exists: this.contactId,
                 collapse: !this.contactId ? 'collapse hide' : 'collapse show'
@@ -112,6 +107,12 @@
                 axios.get(this.endpoint)
                     .then(({data}) => {
                         this.contact = data.data;
+                    });
+            },
+            fetchGroups() {
+                axios.get('/api/groups')
+                    .then(({data}) => {
+                        this.groups = data.data;
                     });
             },
             onSubmit() {

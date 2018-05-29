@@ -36,7 +36,6 @@
     export default {
         props: ['group-id'],
         data() {
-            console.log(this.groupId);
             return {
                 contacts: [],
                 endpoint: this.groupId ? '/api/group/' + this.groupId + '/contacts/' : 'api/contacts',
