@@ -61,12 +61,17 @@ class ContactController extends Controller {
             'email' => 'required|string|email|max:255',
             'phone' => 'required|string|max:255',
             'note' => 'required|string|max:255',
+            'groups' => ''
         ]);
 
         if($contact['id']=="") {
             $contact_edit = Contact::create($contact);
         } else {
             $contact_edit = Contact::find($contact['id']);
+
+            foreach ($contact['groups'] as $id=>$name) {
+                $contactgroups[] = ['contact_id'=>$contact['id'], 'group_id'=>$name['id']];
+            }
             $contact_edit->first_name = $contact['first_name'];
             $contact_edit->last_name = $contact['last_name'];
             $contact_edit->address = $contact['address'];
@@ -76,14 +81,9 @@ class ContactController extends Controller {
             $contact_edit->email = $contact['email'];
             $contact_edit->phone = $contact['phone'];
             $contact_edit->note = $contact['note'];
+            $contact_edit->groups()->sync($contactgroups);
             $contact_edit->save();
         }
-
-        //$contact = Contact::create($contact);
-
-        $group = Group::find($request->group_id);
-        if ($group)
-            $contact->groups()->save($group);
 
         return new ContactResource($contact_edit);
     }

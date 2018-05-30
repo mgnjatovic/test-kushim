@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Contacts</title>
     <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
-
+    <link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.0.0/dist/vue-multiselect.min.css">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="{{ mix('css/app.css') }}" rel="stylesheet" type="text/css">
 </head>

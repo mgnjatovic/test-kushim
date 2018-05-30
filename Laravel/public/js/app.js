@@ -48147,6 +48147,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -48697,19 +48707,35 @@ var render = function() {
                               }
                             }),
                             _vm._v(" "),
-                            _c("multiselect", {
-                              staticClass: "form-control",
-                              attrs: { options: _vm.groups, multiple: true },
-                              model: {
-                                value: _vm.contact.groups,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.contact, "groups", $$v)
-                                },
-                                expression: "contact.groups"
-                              }
-                            })
-                          ],
-                          1
+                            _c(
+                              "div",
+                              [
+                                _c("label", { staticClass: "typo__label" }, [
+                                  _vm._v("Select groups")
+                                ]),
+                                _vm._v(" "),
+                                _c("multiselect", {
+                                  attrs: {
+                                    selected: _vm.contact.groups,
+                                    options: _vm.groups,
+                                    multiple: true,
+                                    placeholder: "Select group",
+                                    label: "name",
+                                    "track-by": "name",
+                                    taggable: true
+                                  },
+                                  model: {
+                                    value: _vm.contact.groups,
+                                    callback: function($$v) {
+                                      _vm.$set(_vm.contact, "groups", $$v)
+                                    },
+                                    expression: "contact.groups"
+                                  }
+                                })
+                              ],
+                              1
+                            )
+                          ]
                         )
                       ]),
                       _vm._v(" "),

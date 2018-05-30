@@ -49,9 +49,19 @@
                                         <input id="phone" v-model="contact.phone" type="text" placeholder="phone"
                                                class="form-control">
                                         <input id="note" v-model="contact.note" type="text" placeholder="note" class="form-control">
-
-                                        <multiselect v-model="contact.groups" :options="groups" :multiple="true" class="form-control"></multiselect>
-
+                                        <div>
+                                            <label class="typo__label">Select groups</label>
+                                            <multiselect
+                                                    v-model="contact.groups"
+                                                    :selected="contact.groups"
+                                                    :options="groups"
+                                                    :multiple="true"
+                                                    placeholder="Select group"
+                                                    label="name"
+                                                    track-by="name"
+                                                    :taggable="true">
+                                            </multiselect>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-contact">
@@ -99,7 +109,7 @@
                 groups: [],
                 endpoint: this.contactId ? '/api/contacts/' + this.contactId : null,
                 exists: this.contactId,
-                collapse: !this.contactId ? 'collapse hide' : 'collapse show'
+                collapse: !this.contactId ? 'collapse hide' : 'collapse show',
             };
         },
         methods: {
