@@ -8,6 +8,8 @@ use App\Contact;
 use App\Group;
 use App\Http\Resources\ContactResource;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Input;
+use Mockery\Exception;
 
 class ContactController extends Controller {
     public function index() {
@@ -49,43 +51,40 @@ class ContactController extends Controller {
      * @return ContactResource
      */
     public function store(Request $request) {
-        $contact = $this->validate($request, [
-            'id' => '',
-            'avatar' => 'required|string|max:255',
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'city' => 'required|string|max:255',
-            'zip' => 'required|string|max:255',
-            'country' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255',
-            'phone' => 'required|string|max:255',
-            'note' => 'required|string|max:255',
-            'groups' => ''
-        ]);
 
-        if($contact['id']=="") {
-            $contact_edit = Contact::create($contact);
-        } else {
-            $contact_edit = Contact::find($contact['id']);
+        try {
+            $contact = $this->validate($request, [
+                'id' => '',
+                'avatar' => '',
+                'first_name' => 'required|string|max:255',
+                'last_name' => 'required|string|max:255',
+                'address' => 'required|string|max:255',
+                'city' => 'required|string|max:255',
+                'zip' => 'required|string|max:255',
+                'country' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255',
+                'phone' => 'required|string|max:255',
+                'note' => 'required|string|max:255',
+                'groups' => ''
+            ]);
 
-            foreach ($contact['groups'] as $id=>$name) {
-                $contactgroups[] = ['contact_id'=>$contact['id'], 'group_id'=>$name['id']];
+            if ($contact['id'] == "") {
+                $contact_edit = Contact::create($contact);
+            } else {
+                $this->editContact($request, $contact);
             }
-            $contact_edit->first_name = $contact['first_name'];
-            $contact_edit->last_name = $contact['last_name'];
-            $contact_edit->address = $contact['address'];
-            $contact_edit->city = $contact['city'];
-            $contact_edit->zip = $contact['zip'];
-            $contact_edit->country = $contact['country'];
-            $contact_edit->email = $contact['email'];
-            $contact_edit->phone = $contact['phone'];
-            $contact_edit->note = $contact['note'];
-            $contact_edit->groups()->sync($contactgroups);
-            $contact_edit->save();
+            //return new ContactResource($contact_edit);
+            return response()->json([
+                'status' => 'success',
+                'success' => 'Contact saved successfully'
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'msg' => 'Error',
+                'errors' => $e->errors(),
+            ], 422);
         }
-
-        return new ContactResource($contact_edit);
     }
 
     public function destroy($id) {
@@ -94,5 +93,57 @@ class ContactController extends Controller {
         // redirect
         return Redirect::to('/');
     }
-    //
+
+    /**
+     * @param $contact
+     * @param $contactgroups
+     * @return array
+     */
+    private function getContactGroups($contact) {
+        foreach ($contact['groups'] as $id => $name) {
+            $contactgroups[] = ['contact_id' => $contact['id'], 'group_id' => $name['id']];
+        }
+        return $contactgroups;
+    }
+
+    /**
+     * @param Request $request
+     * @param $contact
+     */
+    private function editContact(Request $request, $contact) {
+        $contact_edit = Contact::find($contact['id']);
+        $contactgroups = $this->getContactGroups($contact);
+        if (isset($contact['avatar']) && $contact['avatar'] != $contact_edit->avatar) {
+            $contact_edit->avatar = $this->storeImage($request);
+        }
+        $contact_edit->first_name = $contact['first_name'];
+        $contact_edit->last_name = $contact['last_name'];
+        $contact_edit->address = $contact['address'];
+        $contact_edit->city = $contact['city'];
+        $contact_edit->zip = $contact['zip'];
+        $contact_edit->country = $contact['country'];
+        $contact_edit->email = $contact['email'];
+        $contact_edit->phone = $contact['phone'];
+        $contact_edit->note = $contact['note'];
+        $contact_edit->groups()->sync($contactgroups);
+        $contact_edit->save();
+    }
+
+    private function storeImage(Request $request) {
+        try {
+            if ($request->get('avatar')) {
+                $id = $request->get('id');
+                $email = $request->get('email');
+                $name = $id . preg_replace('/[^a-zA-Z0-9]/', '', $email);
+                \Image::make($request->get('avatar'))->save(public_path('images/') . "{$name}.jpg");
+            }
+            return "/images/{$name}.jpg";
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'msg' => 'Error',
+                'errors' => $e->errors(),
+            ], 422);
+        }
+    }
 }
