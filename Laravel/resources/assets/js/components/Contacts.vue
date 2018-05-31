@@ -8,6 +8,10 @@
                             <h4>
                                 <a v-bind:href="'/contact/' + contact.id">{{contact.first_name}} {{contact.last_name}}</a>
                             </h4>
+                            <img v-if="contact.avatar" :src="contact.avatar" class="rounded-circle m-2" height="100"
+                                 width="100">
+                            <img v-if="!contact.avatar" src="/images/placeholder-avatar.png" class="rounded-circle m-2" height="100"
+                                 width="100">
                         </div>
                         <div class="card-body">
                             <p>{{contact.address}}</p>

@@ -33,26 +33,32 @@ class GroupController extends Controller {
      * @return GroupResource
      */
     public function store(Request $request) {
-        $group = $this->validate($request, [
-            'id' => '',
-            'name' => 'required|min:3|max:50'
-        ]);
-
+        $group = $this->validateGroup($request);
         if($group['id']=="") {
             $group_edit = Group::create($group);
         } else {
-            $group_edit = group::find($group['id']);
-            $group_edit->name = $group['name'];
-            $group_edit->save();
+            $group_edit = $this->editGroup($group);
         }
-
         return new GroupResource($group_edit);
     }
 
     public function destroy($id) {
-        // delete
         Group::destroy($id);
-        // redirect
         return Redirect::to('/');
+    }
+
+    private function validateGroup(Request $request) {
+        $group = $this->validate($request, [
+            'id' => '',
+            'name' => 'required|min:3|max:50'
+        ]);
+        return $group;
+    }
+
+    private function editGroup($group) {
+        $group_edit = group::find($group['id']);
+        $group_edit->name = $group['name'];
+        $group_edit->save();
+        return $group_edit;
     }
 }

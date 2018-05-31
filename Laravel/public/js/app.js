@@ -47878,6 +47878,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['group-id'],
@@ -47955,7 +47959,29 @@ var render = function() {
                               _vm._s(contact.last_name)
                           )
                         ])
-                      ])
+                      ]),
+                      _vm._v(" "),
+                      contact.avatar
+                        ? _c("img", {
+                            staticClass: "rounded-circle m-2",
+                            attrs: {
+                              src: contact.avatar,
+                              height: "100",
+                              width: "100"
+                            }
+                          })
+                        : _vm._e(),
+                      _vm._v(" "),
+                      !contact.avatar
+                        ? _c("img", {
+                            staticClass: "rounded-circle m-2",
+                            attrs: {
+                              src: "/images/placeholder-avatar.png",
+                              height: "100",
+                              width: "100"
+                            }
+                          })
+                        : _vm._e()
                     ]),
                     _vm._v(" "),
                     _c(
